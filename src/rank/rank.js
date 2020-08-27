@@ -1,4 +1,4 @@
-function voyageRisk (voyage) {
+function voyageRisk(voyage) {
   let result = 1;
   if (voyage.length > 4) {
     result += 2;
@@ -7,19 +7,19 @@ function voyageRisk (voyage) {
     result += voyage.length - 8;
   }
   if ([
-    'china',
-    'east-indies',
-  ].includes(voyage.zone)) {
+      'china',
+      'east-indies',
+    ].includes(voyage.zone)) {
     result += 4;
   }
   return Math.max(result, 0);
 }
 
-function hasChina (history) {
+function hasChina(history) {
   return history.some(v => 'china' === v.zone);
 }
 
-function captainHistoryRisk (voyage, history) {
+function captainHistoryRisk(voyage, history) {
   let result = 1;
   if (history.length < 5) {
     result += 4;
@@ -31,7 +31,7 @@ function captainHistoryRisk (voyage, history) {
   return Math.max(result, 0);
 }
 
-function voyageProfitFactor (voyage, history) {
+function voyageProfitFactor(voyage, history) {
   let result = 2;
   if (voyage.zone === 'china') {
     result += 1;
@@ -50,8 +50,7 @@ function voyageProfitFactor (voyage, history) {
     if (voyage.length > 18) {
       result -= 1;
     }
-  }
-  else {
+  } else {
     if (history.length > 8) {
       result += 1;
     }
@@ -62,40 +61,17 @@ function voyageProfitFactor (voyage, history) {
   return result;
 }
 
-function rating (voyage, history) {
+function rating(voyage, history) {
   const vpf = voyageProfitFactor(voyage, history);
   const vr = voyageRisk(voyage);
   const chr = captainHistoryRisk(voyage, history);
   if (vpf * 3 > (vr + chr * 2)) {
     return 'A';
-  }
-  else {
+  } else {
     return 'B';
   }
 }
 
 module.exports = {
+  rating
 };
-
-const voyage = {
-  zone: 'west-indies',
-  length: 10,
-};
-const history = [
-  {
-    zone: 'east-indies',
-    profit: 5,
-  },{
-    zone: 'west-indies',
-    profit: 15,
-  },{
-    zone: 'china',
-    profit: -2,
-  },
-  {
-    zone: 'west-africa',
-    profit: 7,
-  },
-];
-const myRating = rating(voyage, history);
-console.log(`myRating: ${myRating}`);
