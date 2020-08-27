@@ -1,3 +1,11 @@
+const {
+  gt8,
+  gt10,
+  gt12,
+  gt14,
+  gt18
+} = require('./checkLength')
+
 function voyageRisk(voyage) {
   let result = 1;
   if (voyage.length > 4) {
@@ -31,33 +39,35 @@ function captainHistoryRisk(voyage, history) {
   return Math.max(result, 0);
 }
 
+function isChina(zone) {
+  return zone === 'china' ? true : false;
+}
+
+function isEastIndies(zone) {
+  return zone === 'east-indies' ? true : false;
+}
+
+function isAndHasChina(len) {
+  let result = 3;
+  result += gt10(len) ? 1 : 0;
+  result += gt12(len) ? 1 : 0;
+  result -= gt18(len) ? 1 : 0;
+  return result;
+}
+
+function notIsOrNotHasChina(historyLen, voyageLen) {
+  let result = 0;
+  result += gt8(historyLen) ? 1 : 0;
+  result -= gt14(voyageLen) ? 1 : 0;
+  return result;
+}
+
 function voyageProfitFactor(voyage, history) {
   let result = 2;
-  if (voyage.zone === 'china') {
-    result += 1;
-  }
-  if (voyage.zone === 'east-indies') {
-    result += 1;
-  }
-  if (voyage.zone === 'china' && hasChina(history)) {
-    result += 3;
-    if (history.length > 10) {
-      result += 1;
-    }
-    if (voyage.length > 12) {
-      result += 1;
-    }
-    if (voyage.length > 18) {
-      result -= 1;
-    }
-  } else {
-    if (history.length > 8) {
-      result += 1;
-    }
-    if (voyage.length > 14) {
-      result -= 1;
-    }
-  }
+  result += isChina(voyage.zone) ? 1 : 0;
+  result += isEastIndies(voyage.zone) ? 1 : 0;
+  result += isChina(voyage.zone) && hasChina(history) ?
+    isAndHasChina(history.length) : notIsOrNotHasChina(history.length, voyage.length);
   return result;
 }
 
