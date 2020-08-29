@@ -3,23 +3,19 @@ const {
   gt10,
   gt12,
   gt14,
-  gt18
+  gt18,
+  gt4
 } = require('./checkLength')
 
 function voyageRisk(voyage) {
   let result = 1;
-  if (voyage.length > 4) {
-    result += 2;
-  }
-  if (voyage.length > 8) {
-    result += voyage.length - 8;
-  }
-  if ([
-      'china',
-      'east-indies',
-    ].includes(voyage.zone)) {
-    result += 4;
-  }
+  result += gt4(voyage.length) ? 2 : 0;
+  result += gt8(voyage.length) ? voyage.length - 8 : 0;
+  result += [
+    'china',
+    'east-indies',
+  ].includes(voyage.zone) ? 4 : 0;
+
   return Math.max(result, 0);
 }
 

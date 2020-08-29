@@ -1,3 +1,7 @@
+const gt4 = (len) => {
+  return len > 4 ? true : false;
+}
+
 const gt8 = (len) => {
   return len > 8 ? true : false
 }
@@ -23,5 +27,6 @@ module.exports = {
   gt10,
   gt12,
   gt14,
-  gt18
+  gt18,
+  gt4
 }
